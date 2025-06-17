@@ -20,7 +20,7 @@ pipeline {
                     npm install netlify-cli 
                     node_modules/.bin/netlify --version
                     echo "Site ID $NETLIFY_SIT_ID"
-                    node_modules/.bin/netlify status
+                    node_modules/.bin/netlify status --site=$NETLIFY_SIT_ID
                 '''
             }
         }
