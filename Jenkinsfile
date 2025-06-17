@@ -42,7 +42,7 @@ pipeline {
             }
             steps {
                 sh '''
-                    npx playwright test --reporter=html
+                    npx playwright test --reporter=html #test
                 '''
             }
         }
