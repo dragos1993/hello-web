@@ -42,7 +42,7 @@ pipeline {
             }
 
             environment {
-                CI_ENVIRONMENT_URL = 'FIXME'
+                CI_ENVIRONMENT_URL = "${env.STAGING_URL}"
             }
             steps {
                 sh '''
