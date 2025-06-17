@@ -25,7 +25,7 @@ pipeline {
             }
             post {
                 always {
-                    archiveArtifacts artifacts: 'dev-deploy-output.json', fingerprint: true
+                    archiveArtifacts artifacts: 'build/**', fingerprint: true
                 }
             }
         }
