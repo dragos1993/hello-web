@@ -22,6 +22,8 @@ pipeline {
                     echo "Site ID $NETLIFY_SITE_ID"
                     node_modules/.bin/netlify status 
                     node_modules/.bin/netlify deploy --dir=build --prod
+                    npm ci || npm install
+                    npx playwright install
                 '''
             }
         }
@@ -34,8 +36,6 @@ pipeline {
             }
         steps {
             sh '''
-                npm ci || npm install
-                npx playwright install
                 npx playwright test --reporter=html
             '''
 
