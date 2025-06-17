@@ -15,15 +15,21 @@ pipeline {
                 }
             }
             steps {
-                 sh '''
+                sh '''
                     npm install netlify-cli 
                     node_modules/.bin/netlify --version
                     echo "Site ID $NETLIFY_SITE_ID"
                     node_modules/.bin/netlify status 
-                    node_modules/.bin/netlify deploy --dir=build 
+                    node_modules/.bin/netlify deploy --dir=build --json > dev-deploy-output.json
                 '''
             }
+            post {
+                always {
+                    archiveArtifacts artifacts: 'dev-deploy-output.json', fingerprint: true
+                }
+            }
         }
+
 
         stage('E2E DEV') {
             agent {
