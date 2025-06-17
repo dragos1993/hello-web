@@ -42,7 +42,9 @@ pipeline {
             }
             steps {
                 sh '''
-                    npx playwright test --reporter=html #test
+                    npm ci || npm install
+                    npx playwright install
+                    npx playwright test --reporter=html
                 '''
             }
         }
