@@ -10,7 +10,6 @@ pipeline {
 
         stage('Docker') {
             steps{
-                sh 'DOCKER_HOST=unix:///var/run/docker.sock'
                 sh 'docker build -t my-playwright .'
             }
         }
