@@ -4,32 +4,9 @@ pipeline {
     environment {
         NETLIFY_SITE_ID = 'b0ca5687-0b10-4b1e-a7c0-490f156350b9'
         NETLIFY_AUTH_TOKEN = credentials('netlify-token')
-
     }
 
     stages {
-
-        stage('AWS') {
-            agent {
-                docker {
-                    image 'amazon/aws-cli'
-                    reuseNode true
-                    args "--entrypoint=''"
-                }
-            }
-            environment {
-                AWS_S3_BUCKET = 'learn-jenkins-20250618'
-            }
-            steps {
-                withCredentials([usernamePassword(credentialsId: 'my-aws', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
-                    sh '''
-                    aws --version
-                    aws s3 sync build s3://$AWS_S3_BUCKET
-
-                    '''
-                }
-            }
-        }
         stage('DEV') {
             agent {
                 docker {
