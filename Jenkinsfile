@@ -52,7 +52,7 @@ pipeline {
 
           #echo "Deploying with swa deploy"
           #swa deploy \
-           # --app-location app \
+           # --app-location .app \
            # --deployment-token $DEPLOYMENT_TOKEN
         '''
       }
