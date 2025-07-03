@@ -28,7 +28,6 @@ pipeline {
       }
     }
   }
-  pipeline {
     agent {
         docker {
             image 'node:18-alpine' // includes npm
@@ -37,17 +36,14 @@ pipeline {
     environment {
         DEPLOYMENT_TOKEN = credentials('azure-deploy-token') // securely pulls deployment token
     }
-    stages {
-        stage('Deploy') {
-            steps {
-                sh '''
-                    npm install -g @azure/static-web-apps-cli
-                    swa deploy \
-                      --app-location app \
-                      --deployment-token $DEPLOYMENT_TOKEN
-                '''
+    stage('Deploy') {
+        steps {
+             sh '''
+                npm install -g @azure/static-web-apps-cli
+                swa deploy \
+                  --app-location app \
+                   --deployment-token $DEPLOYMENT_TOKEN
+            '''
             }
         }
     }
-}
-}
