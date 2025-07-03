@@ -28,23 +28,26 @@ pipeline {
       }
     }
   }
+  pipeline {
     agent {
         docker {
             image 'node:18-alpine' // includes npm
         }
     }
     environment {
-        DEPLOYMENT_TOKEN = credentials('azure-deploy-token') // store as Secret Text in Jenkins
+        DEPLOYMENT_TOKEN = credentials('azure-deploy-token') // securely pulls deployment token
     }
     stages {
-        stage('Deploy2') {
+        stage('Deploy') {
             steps {
-                DEPLOYMENT_TOKEN = credentials('azure-deploy-token')
                 sh '''
                     npm install -g @azure/static-web-apps-cli
-                    swa deploy --app-location app --deployment-token $DEPLOYMENT_TOKEN
+                    swa deploy \
+                      --app-location app \
+                      --deployment-token $DEPLOYMENT_TOKEN
                 '''
             }
         }
     }
+}
 }
