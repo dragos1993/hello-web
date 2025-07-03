@@ -33,6 +33,9 @@ pipeline {
             image 'node:18-alpine' // includes npm
         }
     }
+    environment {
+        DEPLOYMENT_TOKEN = credentials('azure-deploy-token') // store as Secret Text in Jenkins
+    }
     stages {
         stage('Deploy2') {
             steps {
