@@ -35,13 +35,13 @@ pipeline {
         }
       }
     }
-    agent {
-        docker {
-            image 'node:18'
-            args '-u root'
+    stage('InstallSWA CLI') {
+        agent {
+            docker {
+                image 'node:18'
+                args '-u root'
+            }
         }
-    }
-        stage('Install SWA CLI') {
         steps {
             sh '''
             mkdir -p ~/.npm-global
@@ -51,7 +51,13 @@ pipeline {
             '''
         }
         }
-        stage('Deploy to Azure Static Web App') {
+    stage('Deploy to Azure Static Web App') {
+        agent {
+           docker {
+                image 'node:18'
+                args '-u root'
+            } 
+        }
         steps {
             sh '''
             export PATH=~/.npm-global/bin:$PATH
@@ -61,4 +67,3 @@ pipeline {
         }
 
   } // end stages
-}
