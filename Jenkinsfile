@@ -35,22 +35,6 @@ pipeline {
         }
       }
     }
-    stage('InstallSWA CLI') {
-        agent {
-            docker {
-                image 'node:18'
-                args '-u root'
-            }
-        }
-        steps {
-            sh '''
-            mkdir -p ~/.npm-global
-            npm config set prefix '~/.npm-global'
-            export PATH=~/.npm-global/bin:$PATH
-            npm install -g @azure/static-web-apps-cli
-            '''
-        }
-        }
     stage('Install and Deploy SWA') {
         agent {
             docker {
