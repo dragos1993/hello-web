@@ -44,8 +44,11 @@ pipeline {
       }
       steps {
         sh '''
-          echo "Installing SWA CLI again inside Node container"
-          npm install -g @azure/static-web-apps-cli --unsafe-perm --user 0
+          #echo "Installing SWA CLI again inside Node container"
+          #npx @azure/static-web-apps-cli deploy \
+          #  --app-location app \
+          #  --deployment-token $DEPLOYMENT_TOKEN
+
 
           echo "Deploying with swa deploy"
           swa deploy \
