@@ -45,7 +45,11 @@ pipeline {
       steps {
         sh '''
           echo "Installing SWA CLI again inside Node container"
-          npm install -g @azure/static-web-apps-cli --unsafe-perm --user 0
+          chown -R node:node /usr/local/lib/node_modules
+          echo "Fix permissions for global modules"
+          chown -R node:node /usr/local/lib/node_modules
+          npm install -g @azure/static-web-apps-cli
+
 
           echo "Deploying with swa deploy"
           swa deploy \
