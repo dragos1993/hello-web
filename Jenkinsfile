@@ -1,63 +1,45 @@
 pipeline {
   agent {
     docker {
-        image 'node:18'
+      image 'node:18'
+      args '-u root'
     }
   }
+
   environment {
     DEPLOYMENT_TOKEN = credentials('azure-deploy-token')
+    AZURE_CLIENT_ID = credentials('your-client-id-secret-id')
+    AZURE_CLIENT_SECRET = credentials('your-client-secret-secret-id')
+    AZURE_TENANT_ID = credentials('your-tenant-id-secret-id')
+    AZURE_SUBSCRIPTION_ID = credentials('your-subscription-id-secret-id')
   }
+
   stages {
-  
-    stage('Azure Login') {
-      agent {
-        docker {
-          image 'mcr.microsoft.com/azure-cli'
-          args '-u root'
-        }
-      }
-      steps {
-        withCredentials([azureServicePrincipal(
-          credentialsId: 'jenkins-static-swa-sp',
-          clientIdVariable: 'AZURE_CLIENT_ID',
-          clientSecretVariable: 'AZURE_CLIENT_SECRET',
-          tenantIdVariable: 'AZURE_TENANT_ID',
-          subscriptionIdVariable: 'AZURE_SUBSCRIPTION_ID'
-        )]) {
-          sh '''
-            echo "Installing SWA CLI via npm"
-            npm install -g @azure/static-web-apps-cli || true
-
-            echo "Azure Login"
-            az login --service-principal \
-               -u $AZURE_CLIENT_ID \
-               -p $AZURE_CLIENT_SECRET \
-               -t $AZURE_TENANT_ID
-
-            az account set --subscription $AZURE_SUBSCRIPTION_ID
-          '''
-        }
-      }
-    }
-
-    stage('Install SWA CLI') {
+    stage('Install Tools & Azure Login') {
       steps {
         sh '''
-          mkdir -p ~/.npm-global
-          npm config set prefix '~/.npm-global'
-          export PATH=~/.npm-global/bin:$PATH
+          echo "Installing Azure CLI and SWA CLI"
+          curl -sL https://aka.ms/InstallAzureCLIDeb | bash
           npm install -g @azure/static-web-apps-cli
+
+          echo "Logging in to Azure"
+          az login --service-principal \
+            -u $AZURE_CLIENT_ID \
+            -p $AZURE_CLIENT_SECRET \
+            -t $AZURE_TENANT_ID
+
+          az account set --subscription $AZURE_SUBSCRIPTION_ID
         '''
       }
     }
+
     stage('Deploy to Azure Static Web App') {
       steps {
         sh '''
-          export PATH=~/.npm-global/bin:$PATH
+          echo "Deploying to Azure Static Web App"
           swa deploy --app-location app --env preview --deployment-token $DEPLOYMENT_TOKEN
         '''
       }
     }
-
-  } // end stages
+  }
 }
