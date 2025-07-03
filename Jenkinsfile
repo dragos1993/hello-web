@@ -53,8 +53,10 @@ pipeline {
           mkdir -p ~/.npm-global
           npm config set prefix '~/.npm-global'
           export PATH=~/.npm-global/bin:$PATH
-          source ~/.profile  # or the file you edited
+          pwd
           ls -l /home/node
+          source ~/.profile  # or the file you edited
+          
           
           npm install -g @azure/static-web-apps-cli 
           echo "Deploying with swa deploy"
