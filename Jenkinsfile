@@ -36,33 +36,21 @@ pipeline {
       }
     }
 
-    stage('Deploy to SWA') {
-      agent {
-        docker {
-          image 'node:18-alpine'
-        }
-      }
+    stage('Install SWA CLI') {
       steps {
         sh '''
-          echo "Installing SWA CLI again inside Node container"
-          npx @azure/static-web-apps-cli deploy \
-            --app-location app \
-            --deployment-token $DEPLOYMENT_TOKEN
-          
-          echo "Installing SWA CLI globally inside Node container"
           mkdir -p ~/.npm-global
           npm config set prefix '~/.npm-global'
           export PATH=~/.npm-global/bin:$PATH
-          pwd
-          ls -l /home/node
-          source ~/.profile  # or the file you edited
-          
-          
-          npm install -g @azure/static-web-apps-cli 
-          echo "Deploying with swa deploy"
-          swa deploy \
-           --app-location app \
-           --deployment-token $DEPLOYMENT_TOKEN
+          npm install -g @azure/static-web-apps-cli
+        '''
+      }
+    }
+    stage('Deploy to Azure Static Web App') {
+      steps {
+        sh '''
+          export PATH=~/.npm-global/bin:$PATH
+          swa deploy --app-location app --env preview --deployment-token $DEPLOYMENT_TOKEN
         '''
       }
     }
