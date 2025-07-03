@@ -1,5 +1,5 @@
 pipeline {
-  agent none
+  agent any
   environment {
     DEPLOYMENT_TOKEN = credentials('azure-deploy-token')
   }
