@@ -44,16 +44,16 @@ pipeline {
       }
       steps {
         sh '''
-          #echo "Installing SWA CLI again inside Node container"
-          #npx @azure/static-web-apps-cli deploy \
-          #  --app-location app \
-          #  --deployment-token $DEPLOYMENT_TOKEN
-
-
-          echo "Deploying with swa deploy"
-          swa deploy \
+          echo "Installing SWA CLI again inside Node container"
+          npx @azure/static-web-apps-cli deploy \
             --app-location app \
             --deployment-token $DEPLOYMENT_TOKEN
+
+
+          #echo "Deploying with swa deploy"
+          #swa deploy \
+           # --app-location app \
+           # --deployment-token $DEPLOYMENT_TOKEN
         '''
       }
     }
