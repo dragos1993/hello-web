@@ -48,8 +48,14 @@ pipeline {
           npx @azure/static-web-apps-cli deploy \
             --app-location app \
             --deployment-token $DEPLOYMENT_TOKEN
+          
           echo "Installing SWA CLI globally inside Node container"
-          sudo npm install -g @azure/static-web-apps-cli 
+          mkdir -p ~/.npm-global
+          npm config set prefix '~/.npm-global'
+          export PATH=~/.npm-global/bin:$PATH
+          source ~/.profile  # or the file you edited
+          
+          npm install -g @azure/static-web-apps-cli 
           echo "Deploying with swa deploy"
           swa deploy \
            --app-location app \
