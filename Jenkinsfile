@@ -51,20 +51,26 @@ pipeline {
             '''
         }
         }
-    stage('Deploy to Azure Static Web App') {
+    stage('Install and Deploy SWA') {
         agent {
-           docker {
-                image 'node:18'
-                args '-u root'
-            } 
+            docker {
+            image 'node:18'
+            args '-u root'
+            }
         }
         steps {
             sh '''
+            mkdir -p ~/.npm-global
+            npm config set prefix '~/.npm-global'
             export PATH=~/.npm-global/bin:$PATH
+            npm install -g @azure/static-web-apps-cli
+
+            echo "Deploying to Azure Static Web App"
             swa deploy --app-location app --env preview --deployment-token $DEPLOYMENT_TOKEN
             '''
         }
-        }
+}
+
 
   } // end stages
 }
