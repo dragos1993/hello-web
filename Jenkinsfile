@@ -22,7 +22,7 @@ pipeline {
               -p $AZURE_CLIENT_SECRET \
               -t $AZURE_TENANT_ID
             az account set --subscription $AZURE_SUBSCRIPTION_ID
-            az staticwebapp upload --name StaticWebApp --resource-group Ubuntu_group --source .app --token "d343a9774b14e01a235fdd0458ab9cc8e90153503df66f045764915ecc63aef601-eeb3908c-6006-431e-83ae-ccddecd319ea00f200005f22ee0f"
+            az staticwebapp upload --name StaticWebApp --resource-group Ubuntu_group --source app --token "d343a9774b14e01a235fdd0458ab9cc8e90153503df66f045764915ecc63aef601-eeb3908c-6006-431e-83ae-ccddecd319ea00f200005f22ee0f"
           '''
         }
       }
