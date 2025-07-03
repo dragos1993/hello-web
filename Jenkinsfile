@@ -45,7 +45,7 @@ pipeline {
       steps {
         sh '''
           echo "Installing SWA CLI again inside Node container"
-          npm install -g @azure/static-web-apps-cli
+          npm install -g @azure/static-web-apps-cli --unsafe-perm
 
           echo "Deploying with swa deploy"
           swa deploy \
